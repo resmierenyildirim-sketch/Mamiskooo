@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Merhaba Dünya — Animasyonlu Site</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    color:#fff;min-height:100vh;overflow-x:hidden;
+    background:linear-gradient(-45deg,#ee7752,#e73c7e,#23a6d5,#23d5ab);
+    background-size:400% 400%;animation:bg 15s ease infinite;
+  }
+  @keyframes bg{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
+
+  /* Yüzen baloncuklar */
+  .bubbles{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .bubbles span{
+    position:absolute;bottom:-120px;border-radius:50%;
+    background:rgba(255,255,255,.18);backdrop-filter:blur(2px);
+    animation:rise linear infinite;
+  }
+  @keyframes rise{to{transform:translateY(-120vh) scale(1.3);opacity:0}}
+
+  main{position:relative;z-index:1}
+  section{min-height:100vh;display:grid;place-items:center;padding:2rem;text-align:center}
+
+  h1{font-size:clamp(2.5rem,9vw,6rem);line-height:1.1;font-weight:800}
+  h1 span{display:inline-block;animation:pop .8s cubic-bezier(.2,1.6,.4,1) both}
+  @keyframes pop{from{opacity:0;transform:translateY(40px) scale(.5) rotate(-10deg)}}
+  .sub{margin-top:1rem;font-size:1.2rem;opacity:.9;animation:fade 1.5s .9s both}
+  @keyframes fade{from{opacity:0}}
+
+  .btn{
+    display:inline-block;margin-top:2rem;padding:.9rem 2.2rem;border-radius:999px;
+    background:#fff;color:#e73c7e;font-weight:700;text-decoration:none;
+    animation:pulse 2s infinite;transition:transform .2s;
+  }
+  .btn:hover{transform:scale(1.1) rotate(-2deg)}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.7)}70%{box-shadow:0 0 0 22px rgba(255,255,255,0)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}}
+
+  /* Kartlar */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;max-width:900px;width:100%}
+  .card{
+    background:rgba(255,255,255,.15);backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:2rem 1.5rem;
+    opacity:0;transform:translateY(50px);transition:opacity .7s,transform .7s,background .3s;
+  }
+  .card.show{opacity:1;transform:none}
+  .card:hover{transform:translateY(-10px) scale(1.03);background:rgba(255,255,255,.25)}
+  .card .ico{font-size:3rem;display:inline-block;animation:float 3s ease-in-out infinite}
+  .card:nth-child(2) .ico{animation-delay:.5s}
+  .card:nth-child(3) .ico{animation-delay:1s}
+  @keyframes float{50%{transform:translateY(-12px) rotate(8deg)}}
+  .card h3{margin:.8rem 0 .4rem}
+  h2{font-size:clamp(1.8rem,5vw,3rem);margin-bottom:2rem}
+
+  /* Sayaç */
+  .counter{font-size:clamp(3rem,12vw,7rem);font-weight:800}
+
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.card{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="bubbles" id="bubbles" aria-hidden="true"></div>
+
+<main>
+  <section>
+    <div>
+      <h1 id="title">Merhaba Dünya!</h1>
+      <p class="sub">Basit, renkli ve hareketli bir site ✨</p>
+      <a class="btn" href="#kartlar">Aşağı kaydır ↓</a>
+    </div>
+  </section>
+
+  <section id="kartlar">
+    <div>
+      <h2>Neler var?</h2>
+      <div class="cards">
+        <div class="card"><div class="ico">🚀</div><h3>Hızlı</h3><p>Sadece HTML ve CSS, kütüphane yok.</p></div>
+        <div class="card"><div class="ico">🎨</div><h3>Renkli</h3><p>Akan gradyan arka plan.</p></div>
+        <div class="card"><div class="ico">💫</div><h3>Canlı</h3><p>Kaydırdıkça beliren kartlar.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div>
+      <div class="counter" id="count">0</div>
+      <p class="sub" style="animation:none">mutlu ziyaretçi 🎉</p>
+    </div>
+  </section>
+</main>
+
+<script>
+  // Başlığı harf harf canlandır
+  const t = document.getElementById('title');
+  t.innerHTML = [...t.textContent].map((c,i)=>
+    `<span style="animation-delay:${i*.06}s">${c===' '?'&nbsp;':c}</span>`).join('');
+
+  // Baloncuklar
+  const b = document.getElementById('bubbles');
+  for(let i=0;i<25;i++){
+    const s=document.createElement('span'), z=20+Math.random()*80;
+    s.style.cssText=`left:${Math.random()*100}%;width:${z}px;height:${z}px;`+
+      `animation-duration:${8+Math.random()*12}s;animation-delay:${-Math.random()*20}s`;
+    b.appendChild(s);
+  }
+
+  // Kaydırınca beliren kartlar + sayaç
+  const io = new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting) return;
+    e.target.classList.add('show');
+    if(e.target.id==='count') countUp(e.target);
+    io.unobserve(e.target);
+  }),{threshold:.3});
+  document.querySelectorAll('.card').forEach((c,i)=>{c.style.transitionDelay=i*.15+'s';io.observe(c)});
+  io.observe(document.getElementById('count'));
+
+  function countUp(el){
+    const end=12345, t0=performance.now(), d=2000;
+    (function f(n){
+      const p=Math.min((n-t0)/d,1);
+      el.textContent=Math.floor(end*(1-Math.pow(1-p,3))).toLocaleString('tr-TR');
+      if(p<1) requestAnimationFrame(f);
+    })(t0);
+  }
+</script>
+</body>
+</html>
