@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mamiskooo — Sakin, şık alışveriş</title>
+<meta name="description" content="Gözü yormayan, sade ve animasyonlu modern e-ticaret deneyimi.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<a class="skip" href="#urunler">İçeriğe geç</a>
+<div class="bg-blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header class="header" id="header">
+  <div class="wrap header-in">
+    <a class="logo" href="#top" aria-label="Mamiskooo ana sayfa"><span class="logo-dot"></span>mamiskooo</a>
+    <nav class="nav" aria-label="Ana menü">
+      <a href="#kategoriler">Kategoriler</a>
+      <a href="#urunler">Ürünler</a>
+      <a href="#avantajlar">Avantajlar</a>
+      <a href="#bulten">Bülten</a>
+    </nav>
+    <div class="actions">
+      <label class="search"><span class="sr">Ara</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Ürün ara…" autocomplete="off">
+      </label>
+      <button class="icon-btn" id="theme" aria-label="Tema değiştir"><svg viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <button class="icon-btn" id="favBtn" aria-label="Favoriler"><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.5-9.3C1.2 8.5 3 5 6.4 5c2 0 3.5 1.1 4.3 2.5h.6C12.1 6.1 13.6 5 15.6 5 19 5 20.8 8.5 19.5 11.7 19.5 11.7 12 21 12 21z"/></svg><b class="badge" id="favCount">0</b></button>
+      <button class="icon-btn cart-btn" id="cartBtn" aria-label="Sepeti aç"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.4 11h10.2L20 7H6.2"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></svg><b class="badge" id="cartCount">0</b></button>
+    </div>
+  </div>
+</header>
+
+<div class="layout" id="top">
+  <!-- Sol reklam rayı -->
+  <aside class="rail rail-l" aria-label="Reklam alanı">
+    <div class="ad" data-ad>
+      <button class="ad-x" aria-label="Reklamı kapat">×</button>
+      <span class="ad-tag">Reklam</span>
+      <div class="ad-art a1"></div>
+      <h4>Yaz Sonu Fırsatı</h4>
+      <p>Seçili ürünlerde %20'ye varan indirim.</p>
+      <a href="#urunler">İncele</a>
+    </div>
+    <div class="ad" data-ad>
+      <button class="ad-x" aria-label="Reklamı kapat">×</button>
+      <span class="ad-tag">Reklam</span>
+      <div class="ad-art a2"></div>
+      <h4>Ücretsiz Kargo</h4>
+      <p>500 ₺ üzeri siparişlerde.</p>
+      <a href="#avantajlar">Detay</a>
+    </div>
+  </aside>
+
+  <main class="main">
+    <section class="hero">
+      <div class="hero-text">
+        <span class="pill reveal">Yeni sezon · 2026</span>
+        <h1 class="reveal" style="--d:.08s">Sakin renkler,<br><em>rahat</em> alışveriş.</h1>
+        <p class="reveal" style="--d:.16s">Gözünüzü yormayan, sade ve hızlı bir mağaza. Beğendiğiniz ürünleri tek dokunuşla sepete ekleyin.</p>
+        <div class="reveal" style="--d:.24s">
+          <a class="btn" href="#urunler">Alışverişe başla</a>
+          <a class="btn ghost" href="#kategoriler">Kategorilere göz at</a>
+        </div>
+        <ul class="stats reveal" style="--d:.32s">
+          <li><b data-count="12000">0</b><span>Mutlu müşteri</span></li>
+          <li><b data-count="480">0</b><span>Ürün</span></li>
+          <li><b data-count="4.9" data-dec="1">0</b><span>Puan</span></li>
+        </ul>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="orb o1">🛍️</div><div class="orb o2">🎧</div><div class="orb o3">👟</div><div class="orb o4">⌚</div>
+        <div class="ring"></div>
+      </div>
+    </section>
+
+    <section id="kategoriler" class="sec">
+      <div class="sec-head reveal"><h2>Kategoriler</h2><p>İhtiyacınız olanı hızla bulun.</p></div>
+      <div class="cats" id="cats"></div>
+    </section>
+
+    <section id="urunler" class="sec">
+      <div class="sec-head reveal">
+        <div><h2>Öne çıkan ürünler</h2><p id="resultInfo"></p></div>
+        <label class="sort"><span class="sr">Sırala</span>
+          <select id="sort">
+            <option value="def">Önerilen</option>
+            <option value="asc">Fiyat: Artan</option>
+            <option value="desc">Fiyat: Azalan</option>
+            <option value="rate">En yüksek puan</option>
+          </select>
+        </label>
+      </div>
+      <div class="chips" id="chips" role="tablist"></div>
+      <div class="grid" id="grid"></div>
+      <p class="empty" id="empty" hidden>Aramanıza uygun ürün bulunamadı.</p>
+    </section>
+
+    <section class="banner reveal">
+      <div><h3>İlk siparişine özel %10 indirim</h3><p>Kod: <code>HOSGELDIN</code> — sepette uygulayın.</p></div>
+      <button class="btn light" id="copyCode">Kodu kopyala</button>
+    </section>
+
+    <section id="avantajlar" class="sec">
+      <div class="sec-head reveal"><h2>Neden Mamiskooo?</h2></div>
+      <div class="perks">
+        <article class="perk reveal"><span>🚚</span><h4>Hızlı teslimat</h4><p>Aynı gün kargo, 1–3 iş gününde kapınızda.</p></article>
+        <article class="perk reveal" style="--d:.08s"><span>🔒</span><h4>Güvenli ödeme</h4><p>3D Secure ve şifreli ödeme altyapısı.</p></article>
+        <article class="perk reveal" style="--d:.16s"><span>↩️</span><h4>Kolay iade</h4><p>14 gün içinde sorusuz sualsiz iade.</p></article>
+        <article class="perk reveal" style="--d:.24s"><span>💬</span><h4>7/24 destek</h4><p>Her zaman yanınızda, hızlı yanıt.</p></article>
+      </div>
+    </section>
+
+    <section id="bulten" class="sec news reveal">
+      <h2>Fırsatlardan haberdar olun</h2>
+      <p>Spam yok, sadece işe yarar haberler.</p>
+      <form id="newsForm"><input type="email" required placeholder="E-posta adresiniz" aria-label="E-posta"><button class="btn">Abone ol</button></form>
+    </section>
+
+    <footer class="footer">© 2026 Mamiskooo · Tüm hakları saklıdır.</footer>
+  </main>
+
+  <!-- Sağ reklam rayı -->
+  <aside class="rail rail-r" aria-label="Reklam alanı">
+    <div class="ad" data-ad>
+      <button class="ad-x" aria-label="Reklamı kapat">×</button>
+      <span class="ad-tag">Reklam</span>
+      <div class="ad-art a3"></div>
+      <h4>Yeni Koleksiyon</h4>
+      <p>Sonbahar renkleri ile tanışın.</p>
+      <a href="#urunler">Keşfet</a>
+    </div>
+    <div class="ad" data-ad>
+      <button class="ad-x" aria-label="Reklamı kapat">×</button>
+      <span class="ad-tag">Reklam</span>
+      <div class="ad-art a4"></div>
+      <h4>Hediye Rehberi</h4>
+      <p>Sevdiklerinize özel seçkiler.</p>
+      <a href="#kategoriler">Bak</a>
+    </div>
+  </aside>
+</div>
+
+<!-- Sepet çekmecesi -->
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Sepet" aria-hidden="true">
+  <div class="drawer-head"><h3>Sepetim</h3><button class="icon-btn" id="closeCart" aria-label="Kapat">×</button></div>
+  <div class="drawer-body" id="cartItems"></div>
+  <div class="drawer-foot">
+    <div class="ship" id="shipBar"><span id="shipText"></span><div class="bar"><i id="shipFill"></i></div></div>
+    <div class="total"><span>Toplam</span><b id="cartTotal">0 ₺</b></div>
+    <button class="btn block" id="checkout">Ödemeye geç</button>
+  </div>
+</aside>
+
+<!-- Hızlı bakış -->
+<div class="modal" id="modal" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="modal-card" id="modalCard"></div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="js/app.js"></script>
+</body>
+</html>
